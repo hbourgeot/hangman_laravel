@@ -15,6 +15,10 @@ class CreateHangsTable extends Migration
     {
         Schema::create('hangs', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('hint', 255);
+            $table->string('answer', 255);
+            $table->integer('length');
+
             $table->timestamps();
         });
     }
