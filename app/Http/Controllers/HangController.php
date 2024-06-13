@@ -10,6 +10,7 @@ class HangController extends Controller
     private static $hint;
     private static $length;
     private static $answer;
+    private static $tries = 10;
 
     public function index()
     {
@@ -17,6 +18,7 @@ class HangController extends Controller
         $random = rand(1, 10);
         $hang = Hang::find($random);
         self::$hint = $hang->hint;
+        self::$length = $hang->length;
 
         return response()->json([
             'hang' => $hang->hint,
@@ -54,7 +56,6 @@ class HangController extends Controller
         }
 
         self::$answer = $answer;
-
         // check if the answer does not contain underscores, if it does not, return "you win", otherwise return the answer
         if (strpos($answer, "_") === false) {
             return response()->json([
@@ -63,8 +64,11 @@ class HangController extends Controller
             ]);
         }
 
+        self::$tries--;
+
         return response()->json([
-            'answer' => $answer
+            'answer' => $answer,
+            'tries' => self::$tries
         ]);
     }
 
